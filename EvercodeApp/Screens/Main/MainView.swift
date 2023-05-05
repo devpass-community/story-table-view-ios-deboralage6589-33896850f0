@@ -40,6 +40,7 @@ private extension MainView {
 
         self.configureSubviews()
         self.configureSubviewsConstraints()
+        self.configureDataSource()
     }
 
     func configureSubviews() {
@@ -56,5 +57,22 @@ private extension MainView {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+    }
+    
+    func configureDataSource() {
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ReuseIdentifier")
+    }
+}
+
+extension MainView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseIdentifier", for: indexPath)
+        cell.textLabel?.text = items[indexPath.row]
+        return cell
     }
 }
